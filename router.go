@@ -2,17 +2,22 @@ package restful
 
 import (
   "github.com/gorilla/mux"
+  "net/http"
   "log"
 )
 
 type Router struct {
-  *mux.Router
+  impl *mux.Router
+}
+
+func NewRouter() *Router {
+  return &Router{ mux.NewRouter() }
 }
 
 func (router *Router) AddResource(path string, controller interface{}) {
   log.Printf("adding resource %v", path)
 
-  api := router.PathPrefix(path).Subrouter()
+  api := router.impl.PathPrefix(path).Subrouter()
   registered := make([]string, 0, 5)
 
   if lister, ok := controller.(Lister); ok {
@@ -42,7 +47,7 @@ func (router *Router) AddResource(path string, controller interface{}) {
   log.Printf("registered controller %#v implementing interfaces %v", controller, registered)
 }
 
-func NewRouter() *Router {
-  return &Router{ mux.NewRouter() }
+func (router *Router) ServeHTTP(out http.ResponseWriter, in *http.Request) {
+  router.impl.ServeHTTP(out, in)
 }
 
