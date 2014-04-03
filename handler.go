@@ -20,7 +20,7 @@ import (
   "github.com/gorilla/mux"
   "encoding/json"
   "net/http"
-  "log"
+  "fmt"
 )
 
 type HandlerFunc func(http.ResponseWriter, *http.Request)
@@ -29,7 +29,7 @@ func NewListerHandler(lister Lister) HandlerFunc {
   return func (out http.ResponseWriter, req *http.Request) {
     elems := lister.All()
     if elems == nil {
-      log.Panicf("nil map returned from %#v\n", lister)
+      panic(fmt.Errorf("Lister.All on %#v returned nil\n", lister))
     }
 
     encoder := json.NewEncoder(out)
@@ -57,7 +57,7 @@ func NewAdderHandler(adder Adder) HandlerFunc {
     decoder := json.NewDecoder(in.Body)
     elem := adder.New()
     if elem == nil {
-      log.Panicf("Creator.New on %#v returned nil", adder)
+      panic(fmt.Errorf("Creator.New on %#v returned nil", adder))
     }
     if err := decoder.Decode(&elem); err != nil {
       panic(err)
@@ -79,7 +79,7 @@ func NewReplacerHandler(replacer Replacer) HandlerFunc {
     decoder := json.NewDecoder(in.Body)
     elem := replacer.New()
     if elem == nil {
-      log.Panicf("Creator.New on %#v returned nil", replacer)
+      panic(fmt.Errorf("Creator.New on %#v returned nil", replacer))
     }
     if err := decoder.Decode(&elem); err != nil {
       panic(err)
@@ -110,7 +110,7 @@ func NewDeleterHandler(deleter Deleter) HandlerFunc {
 func getResourceId(in *http.Request) string {
   id, ok := mux.Vars(in)["id"]
   if !ok {
-    log.Panicln("resource id not found in request data")
+    panic(fmt.Errorf("resource id not found in request data"))
   }
   return id
 }
