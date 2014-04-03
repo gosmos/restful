@@ -17,24 +17,27 @@
 package restful
 
 import (
-  "bytes"
   "net/http"
-  "encoding/json"
   "net/http/httptest"
   "testing"
+  "strings"
+  "fmt"
 )
 
 type testLister struct {
   TimesCalled int
-  ReturnedMap map[int64]interface{}
+  ReturnedMap map[string]interface{}
 }
-func (lister *testLister) All() map[int64]interface{} {
+func NewTestLister() *testLister {
+  return &testLister{ 0, make(map[string]interface{}) }
+}
+func (lister *testLister) All() map[string]interface{} {
   lister.TimesCalled += 1
   return lister.ReturnedMap
 }
 
 func TestAllMethodCalled(t *testing.T) {
-  fakeController := new(testLister)
+  fakeController := NewTestLister()
 
   router := NewRouter()
   router.AddResource("/test", fakeController)
@@ -46,12 +49,12 @@ func TestAllMethodCalled(t *testing.T) {
   router.ServeHTTP(w, req)
 
   if fakeController.TimesCalled != 1 {
-    t.Errorf("Expected 1 call, got %+v.", fakeController.TimesCalled)
+    t.Errorf("Expected 1 call, got %v.", fakeController.TimesCalled)
   }
 }
 
 func TestJsonResponseAfterReturningEmptyMapFromAll(t *testing.T) {
-  fakeController := new(testLister)
+  fakeController := NewTestLister()
 
   router := NewRouter()
   router.AddResource("/test", fakeController)
@@ -62,16 +65,17 @@ func TestJsonResponseAfterReturningEmptyMapFromAll(t *testing.T) {
   w := httptest.NewRecorder()
   router.ServeHTTP(w, req)
 
-  expectedJson, _ := json.Marshal(fakeController.All())
-  actualJson := w.Body.Bytes()
-  if !bytes.Equal(expectedJson, actualJson) {
-    t.Errorf("Expected response %+v, got %+v.", expectedJson, actualJson)
+  expectedJson := "{}"
+  actualJson := strings.TrimSpace(string(w.Body.Bytes()))
+  if expectedJson != actualJson {
+    t.Errorf("Expected response '%v', got '%v'.", expectedJson, actualJson)
   }
 }
 
 func TestJsonResponseAfterReturningEmptyMapWithOneString(t *testing.T) {
-  fakeController := new(testLister)
-  fakeController.ReturnedMap = map[int64]interface{} { 0 : "test" }
+  fakeController := NewTestLister()
+  id0 := "test"
+  fakeController.ReturnedMap[id0] = id0
 
   router := NewRouter()
   router.AddResource("/test", fakeController)
@@ -82,22 +86,25 @@ func TestJsonResponseAfterReturningEmptyMapWithOneString(t *testing.T) {
   w := httptest.NewRecorder()
   router.ServeHTTP(w, req)
 
-  expectedJson, _ := json.Marshal(fakeController.All())
-  actualJson := w.Body.Bytes()
-  if !bytes.Equal(expectedJson, actualJson) {
-    t.Errorf("Expected response %+v, got %+v.", expectedJson, actualJson)
+  expectedJson := fmt.Sprintf("{\"%v\":\"%v\"}", id0, id0)
+  actualJson := strings.TrimSpace(string(w.Body.Bytes()))
+  if expectedJson != actualJson {
+    t.Errorf("Expected response '%v', got '%v'.", expectedJson, actualJson)
   }
 }
 
 type testStruct struct {
-  test int
+  Test string `json:"test"`
 }
 
 func TestJsonResponseAfterReturningEmptyMapWithTwoStructs(t *testing.T) {
-  fakeController := new(testLister)
-  fakeController.ReturnedMap = map[int64]interface{} {
-    0 : testStruct{0}, 1 : testStruct{1},
-  }
+  fakeController := NewTestLister()
+  var (
+    id0 string = "0"
+    id1 string = "1"
+  )
+  fakeController.ReturnedMap[id0] = testStruct{id0}
+  fakeController.ReturnedMap[id1] = testStruct{id1}
 
   router := NewRouter()
   router.AddResource("/test", fakeController)
@@ -108,10 +115,10 @@ func TestJsonResponseAfterReturningEmptyMapWithTwoStructs(t *testing.T) {
   w := httptest.NewRecorder()
   router.ServeHTTP(w, req)
 
-  expectedJson, _ := json.Marshal(fakeController.All())
-  actualJson := w.Body.Bytes()
-  if !bytes.Equal(expectedJson, actualJson) {
-    t.Errorf("Expected response %+v, got %+v.", expectedJson, actualJson)
+  expectedJson := fmt.Sprintf("{\"%v\":{\"test\":\"%v\"},\"%v\":{\"test\":\"%v\"}}", id0, id0, id1, id1)
+  actualJson := strings.TrimSpace(string(w.Body.Bytes()))
+  if expectedJson != actualJson {
+    t.Errorf("Expected response '%v', got '%v'.", expectedJson, actualJson)
   }
 }
 

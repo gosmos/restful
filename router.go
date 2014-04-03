@@ -39,7 +39,7 @@ func (router *Router) AddResource(path string, controller interface{}) {
     registered = true
   }
   if getter, ok := controller.(Getter); ok {
-    api.Path("/{id:[0-9]+}").Methods("GET").HandlerFunc(NewGetterHandler(getter))
+    api.Path("/{id}").Methods("GET").HandlerFunc(NewGetterHandler(getter))
     registered = true
   }
   if adder, ok := controller.(Adder); ok {
@@ -47,11 +47,11 @@ func (router *Router) AddResource(path string, controller interface{}) {
     registered = true
   }
   if replacer, ok := controller.(Replacer); ok {
-    api.Path("/{id:[0-9]+}").Methods("PUT").HandlerFunc(NewReplacerHandler(replacer))
+    api.Path("/{id}").Methods("PUT").HandlerFunc(NewReplacerHandler(replacer))
     registered = true
   }
   if deleter, ok := controller.(Deleter); ok {
-    api.Path("/{id:[0-9]+}").Methods("DELETE").HandlerFunc(NewDeleterHandler(deleter))
+    api.Path("/{id}").Methods("DELETE").HandlerFunc(NewDeleterHandler(deleter))
     registered = true
   }
 

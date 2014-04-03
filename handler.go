@@ -20,7 +20,6 @@ import (
   "github.com/gorilla/mux"
   "encoding/json"
   "net/http"
-  "strconv"
   "log"
 )
 
@@ -29,9 +28,12 @@ type HandlerFunc func(http.ResponseWriter, *http.Request)
 func NewListerHandler(lister Lister) HandlerFunc {
   return func (out http.ResponseWriter, req *http.Request) {
     elems := lister.All()
+    if elems == nil {
+      log.Panicf("nil map returned from %#v\n", lister)
+    }
 
-    bytes, _ := json.Marshal(elems)
-    if _, err := out.Write(bytes); err != nil {
+    encoder := json.NewEncoder(out)
+    if err := encoder.Encode(elems); err != nil {
       panic(err)
     }
   }
@@ -43,7 +45,7 @@ func NewGetterHandler(getter Getter) HandlerFunc {
 
     elem := getter.Get(id)
 
-    bytes, _ := json.Marshal(map[int64]interface{} { id : elem })
+    bytes, _ := json.Marshal(map[string]interface{} { id : elem })
     if _, err := out.Write(bytes); err != nil {
       panic(err)
     }
@@ -63,7 +65,7 @@ func NewAdderHandler(adder Adder) HandlerFunc {
 
     id := adder.Add(elem)
 
-    bytes, _ := json.Marshal(map[int64]interface{} { id : elem })
+    bytes, _ := json.Marshal(map[string]interface{} { id : elem })
     if _, err := out.Write(bytes); err != nil {
       panic(err)
     }
@@ -85,7 +87,7 @@ func NewReplacerHandler(replacer Replacer) HandlerFunc {
 
     replacer.Replace(id, elem)
 
-    bytes, _ := json.Marshal(map[int64]interface{} { id : elem })
+    bytes, _ := json.Marshal(map[string]interface{} { id : elem })
     if _, err := out.Write(bytes); err != nil {
       panic(err)
     }
@@ -105,14 +107,10 @@ func NewDeleterHandler(deleter Deleter) HandlerFunc {
   }
 }
 
-func getResourceId(in *http.Request) int64 {
-  idStr, ok := mux.Vars(in)["id"]
+func getResourceId(in *http.Request) string {
+  id, ok := mux.Vars(in)["id"]
   if !ok {
     log.Panicln("resource id not found in request data")
-  }
-  id, err := strconv.ParseInt(idStr, 10, 64)
-  if err != nil {
-    log.Panicf("resource id is not an integer: %d (%s)", idStr, err)
   }
   return id
 }
