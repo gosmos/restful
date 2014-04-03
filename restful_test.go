@@ -122,3 +122,29 @@ func TestJsonResponseAfterReturningEmptyMapWithTwoStructs(t *testing.T) {
   }
 }
 
+func TestPanicWhenReturningNilMapFromLister(t *testing.T) {
+  fakeController := new(testLister) // ReturnedMap is nil
+
+  router := NewRouter()
+  w := httptest.NewRecorder()
+
+  defer func() {
+    if err := recover(); err == nil {
+      t.Error("Should panic when returned map is nil, but didnt.")
+    }
+  }()
+  createResourceAndServeARequest(router, "/test", "/", fakeController, w)
+}
+
+func createResourceAndServeARequest(router *Router,
+    resource string, request string, controller interface{},
+    out http.ResponseWriter) {
+
+  router.AddResource(resource, controller)
+
+  url := "http://www.domain.com"+ resource + request
+  req, _ := http.NewRequest("GET", url, nil)
+
+  router.ServeHTTP(out, req)
+}
+
