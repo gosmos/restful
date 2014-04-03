@@ -25,11 +25,11 @@ import (
 
 type HandlerFunc func(http.ResponseWriter, *http.Request)
 
-func NewListerHandler(lister Lister) HandlerFunc {
+func NewIndexerHandler(controller Indexer) HandlerFunc {
   return func (out http.ResponseWriter, req *http.Request) {
-    elems := lister.All()
+    elems := controller.Index()
     if elems == nil {
-      panic(fmt.Errorf("Lister.All on %#v returned nil\n", lister))
+      panic(fmt.Errorf("Indexer.All on %#v returned nil\n", controller))
     }
 
     encoder := json.NewEncoder(out)
@@ -39,11 +39,11 @@ func NewListerHandler(lister Lister) HandlerFunc {
   }
 }
 
-func NewGetterHandler(getter Getter) HandlerFunc {
+func NewShowerHandler(controller Shower) HandlerFunc {
   return func (out http.ResponseWriter, in *http.Request) {
     id := getResourceId(in)
 
-    elem := getter.Get(id)
+    elem := controller.Show(id)
 
     bytes, _ := json.Marshal(map[string]interface{} { id : elem })
     if _, err := out.Write(bytes); err != nil {
@@ -52,18 +52,18 @@ func NewGetterHandler(getter Getter) HandlerFunc {
   }
 }
 
-func NewAdderHandler(adder Adder) HandlerFunc {
+func NewCreatorHandler(controller Creator) HandlerFunc {
   return func (out http.ResponseWriter, in *http.Request) {
     decoder := json.NewDecoder(in.Body)
-    elem := adder.New()
+    elem := controller.New()
     if elem == nil {
-      panic(fmt.Errorf("Creator.New on %#v returned nil", adder))
+      panic(fmt.Errorf("Creator.New on %#v returned nil", controller))
     }
     if err := decoder.Decode(&elem); err != nil {
       panic(err)
     }
 
-    id := adder.Add(elem)
+    id := controller.Create(elem)
 
     bytes, _ := json.Marshal(map[string]interface{} { id : elem })
     if _, err := out.Write(bytes); err != nil {
@@ -72,20 +72,20 @@ func NewAdderHandler(adder Adder) HandlerFunc {
   }
 }
 
-func NewReplacerHandler(replacer Replacer) HandlerFunc {
+func NewUpdaterHandler(cotroller Updater) HandlerFunc {
   return func (out http.ResponseWriter, in *http.Request) {
     id := getResourceId(in)
 
     decoder := json.NewDecoder(in.Body)
-    elem := replacer.New()
+    elem := cotroller.New()
     if elem == nil {
-      panic(fmt.Errorf("Creator.New on %#v returned nil", replacer))
+      panic(fmt.Errorf("Creator.New on %#v returned nil", cotroller))
     }
     if err := decoder.Decode(&elem); err != nil {
       panic(err)
     }
 
-    replacer.Replace(id, elem)
+    cotroller.Update(id, elem)
 
     bytes, _ := json.Marshal(map[string]interface{} { id : elem })
     if _, err := out.Write(bytes); err != nil {

@@ -19,7 +19,7 @@ package restful
 import (
   "github.com/gorilla/mux"
   "net/http"
-  "log"
+  "fmt"
 )
 
 type Router struct {
@@ -34,20 +34,20 @@ func (router *Router) AddResource(path string, controller interface{}) {
   api := router.impl.PathPrefix(path).Subrouter()
   registered := false
 
-  if lister, ok := controller.(Lister); ok {
-    api.Path("/").Methods("GET").HandlerFunc(NewListerHandler(lister))
+  if indexer, ok := controller.(Indexer); ok {
+    api.Path("/").Methods("GET").HandlerFunc(NewIndexerHandler(indexer))
     registered = true
   }
-  if getter, ok := controller.(Getter); ok {
-    api.Path("/{id}").Methods("GET").HandlerFunc(NewGetterHandler(getter))
+  if shower, ok := controller.(Shower); ok {
+    api.Path("/{id}").Methods("GET").HandlerFunc(NewShowerHandler(shower))
     registered = true
   }
-  if adder, ok := controller.(Adder); ok {
-    api.Path("/").Methods("POST").HandlerFunc(NewAdderHandler(adder))
+  if creator, ok := controller.(Creator); ok {
+    api.Path("/").Methods("POST").HandlerFunc(NewCreatorHandler(creator))
     registered = true
   }
-  if replacer, ok := controller.(Replacer); ok {
-    api.Path("/{id}").Methods("PUT").HandlerFunc(NewReplacerHandler(replacer))
+  if updater, ok := controller.(Updater); ok {
+    api.Path("/{id}").Methods("PUT").HandlerFunc(NewUpdaterHandler(updater))
     registered = true
   }
   if deleter, ok := controller.(Deleter); ok {
@@ -56,7 +56,7 @@ func (router *Router) AddResource(path string, controller interface{}) {
   }
 
   if !registered {
-    log.Panicf("controller %#v doesn't implement any REST interfaces", controller)
+    fmt.Errorf("%#v doesn't implement any REST interfaces", controller)
   }
 }
 

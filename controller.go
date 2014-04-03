@@ -16,22 +16,19 @@
 
 package restful
 
-type Lister interface {
-  All() map[string]interface{}
+type Indexer interface {
+  Index() map[string]interface{}
 }
-type Getter interface {
-  Get(string) interface{}
+type Shower interface {
+  Show(string) interface{}
 }
 type Creator interface {
   New() interface{}
+  Create(interface{}) string
 }
-type Adder interface {
-  Creator
-  Add(interface{}) string
-}
-type Replacer interface {
-  Creator
-  Replace(string, interface{})
+type Updater interface {
+  New() interface{}
+  Update(string, interface{})
 }
 type Deleter interface {
   Delete(string) bool

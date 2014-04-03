@@ -24,20 +24,20 @@ import (
   "fmt"
 )
 
-type testLister struct {
+type testIndexer struct {
   TimesCalled int
   ReturnedMap map[string]interface{}
 }
-func NewTestLister() *testLister {
-  return &testLister{ 0, make(map[string]interface{}) }
+func NewTestIndexer() *testIndexer {
+  return &testIndexer{ 0, make(map[string]interface{}) }
 }
-func (lister *testLister) All() map[string]interface{} {
-  lister.TimesCalled += 1
-  return lister.ReturnedMap
+func (indexer *testIndexer) Index() map[string]interface{} {
+  indexer.TimesCalled += 1
+  return indexer.ReturnedMap
 }
 
 func TestAllMethodCalled(t *testing.T) {
-  fakeController := NewTestLister()
+  fakeController := NewTestIndexer()
 
   router, w := NewRouter(), httptest.NewRecorder()
   createResourceAndServeARequest(router, "/test", "/", fakeController, w)
@@ -48,7 +48,7 @@ func TestAllMethodCalled(t *testing.T) {
 }
 
 func TestJsonResponseAfterReturningEmptyMapFromAll(t *testing.T) {
-  fakeController := NewTestLister()
+  fakeController := NewTestIndexer()
 
   router, w := NewRouter(), httptest.NewRecorder()
   createResourceAndServeARequest(router, "/test", "/", fakeController, w)
@@ -61,7 +61,7 @@ func TestJsonResponseAfterReturningEmptyMapFromAll(t *testing.T) {
 }
 
 func TestJsonResponseAfterReturningEmptyMapWithOneString(t *testing.T) {
-  fakeController := NewTestLister()
+  fakeController := NewTestIndexer()
   id0 := "test"
   fakeController.ReturnedMap[id0] = id0
 
@@ -80,7 +80,7 @@ type testStruct struct {
 }
 
 func TestJsonResponseAfterReturningEmptyMapWithTwoStructs(t *testing.T) {
-  fakeController := NewTestLister()
+  fakeController := NewTestIndexer()
   id0, id1 := "0", "1"
   fakeController.ReturnedMap[id0] = testStruct{id0}
   fakeController.ReturnedMap[id1] = testStruct{id1}
@@ -95,8 +95,8 @@ func TestJsonResponseAfterReturningEmptyMapWithTwoStructs(t *testing.T) {
   }
 }
 
-func TestPanicWhenReturningNilMapFromLister(t *testing.T) {
-  fakeController := new(testLister) // ReturnedMap is nil
+func TestPanicWhenReturningNilMapFromIndexer(t *testing.T) {
+  fakeController := new(testIndexer) // ReturnedMap is nil
 
   router, w := NewRouter(), httptest.NewRecorder()
 
