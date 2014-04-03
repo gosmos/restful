@@ -24,7 +24,7 @@ import (
   "net/http"
 )
 
-func init()
+func main()
   router := restful.NewRouter()
   router.AddResource("/api/mytoys", NewMyToysController())
   http.ListenAndServe(":8080", router)
@@ -37,9 +37,7 @@ can be divided into three simple steps:
  2. configure resource,
  3. and set the router as HTTP handler.
 
-The last thing to do, to make it work,
-is to define *NewMyToysController()* function.
-To be able to do that, we need to define controller structure
+The last thing to do, to make it work, is to define controller structure
 and at least one method for handling REST calls.
 
 ```go
@@ -77,13 +75,11 @@ TODO
 Google App Engine
 -----------------
 
-gosmos/restful is fully GAE-compatible.
-
-There are two things to pay attention to:
+Library is fully GAE-compatible. There are two things to pay attention to:
  1. Invoking *http.ListenAndServe()* is not allowed on GAE.
  2. Using package *main* is prohibited.
 
-Consult ([officialGAE docs](
+Consult [official GAE docs](
 https://developers.google.com/appengine/docs/go/gettingstarted/helloworld)
 for details.
 
