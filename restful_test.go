@@ -39,14 +39,8 @@ func (lister *testLister) All() map[string]interface{} {
 func TestAllMethodCalled(t *testing.T) {
   fakeController := NewTestLister()
 
-  router := NewRouter()
-  router.AddResource("/test", fakeController)
-
-  url := "http://www.domain.com/test/"
-  req, _ := http.NewRequest("GET", url, nil)
-
-  w := httptest.NewRecorder()
-  router.ServeHTTP(w, req)
+  router, w := NewRouter(), httptest.NewRecorder()
+  createResourceAndServeARequest(router, "/test", "/", fakeController, w)
 
   if fakeController.TimesCalled != 1 {
     t.Errorf("Expected 1 call, got %v.", fakeController.TimesCalled)
@@ -56,14 +50,8 @@ func TestAllMethodCalled(t *testing.T) {
 func TestJsonResponseAfterReturningEmptyMapFromAll(t *testing.T) {
   fakeController := NewTestLister()
 
-  router := NewRouter()
-  router.AddResource("/test", fakeController)
-
-  url := "http://www.domain.com/test/"
-  req, _ := http.NewRequest("GET", url, nil)
-
-  w := httptest.NewRecorder()
-  router.ServeHTTP(w, req)
+  router, w := NewRouter(), httptest.NewRecorder()
+  createResourceAndServeARequest(router, "/test", "/", fakeController, w)
 
   expectedJson := "{}"
   actualJson := strings.TrimSpace(string(w.Body.Bytes()))
@@ -77,14 +65,8 @@ func TestJsonResponseAfterReturningEmptyMapWithOneString(t *testing.T) {
   id0 := "test"
   fakeController.ReturnedMap[id0] = id0
 
-  router := NewRouter()
-  router.AddResource("/test", fakeController)
-
-  url := "http://www.domain.com/test/"
-  req, _ := http.NewRequest("GET", url, nil)
-
-  w := httptest.NewRecorder()
-  router.ServeHTTP(w, req)
+  router, w := NewRouter(), httptest.NewRecorder()
+  createResourceAndServeARequest(router, "/test", "/", fakeController, w)
 
   expectedJson := fmt.Sprintf("{\"%v\":\"%v\"}", id0, id0)
   actualJson := strings.TrimSpace(string(w.Body.Bytes()))
@@ -99,21 +81,12 @@ type testStruct struct {
 
 func TestJsonResponseAfterReturningEmptyMapWithTwoStructs(t *testing.T) {
   fakeController := NewTestLister()
-  var (
-    id0 string = "0"
-    id1 string = "1"
-  )
+  id0, id1 := "0", "1"
   fakeController.ReturnedMap[id0] = testStruct{id0}
   fakeController.ReturnedMap[id1] = testStruct{id1}
 
-  router := NewRouter()
-  router.AddResource("/test", fakeController)
-
-  url := "http://www.domain.com/test/"
-  req, _ := http.NewRequest("GET", url, nil)
-
-  w := httptest.NewRecorder()
-  router.ServeHTTP(w, req)
+  router, w := NewRouter(), httptest.NewRecorder()
+  createResourceAndServeARequest(router, "/test", "/", fakeController, w)
 
   expectedJson := fmt.Sprintf("{\"%v\":{\"test\":\"%v\"},\"%v\":{\"test\":\"%v\"}}", id0, id0, id1, id1)
   actualJson := strings.TrimSpace(string(w.Body.Bytes()))
@@ -125,8 +98,7 @@ func TestJsonResponseAfterReturningEmptyMapWithTwoStructs(t *testing.T) {
 func TestPanicWhenReturningNilMapFromLister(t *testing.T) {
   fakeController := new(testLister) // ReturnedMap is nil
 
-  router := NewRouter()
-  w := httptest.NewRecorder()
+  router, w := NewRouter(), httptest.NewRecorder()
 
   defer func() {
     if err := recover(); err == nil {
