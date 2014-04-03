@@ -27,8 +27,7 @@ import (
 func init()
   router := restful.NewRouter()
   router.AddResource("/api/mytoys", NewMyToysController())
-  http.Handle("/", router)
-  http.ListenAndServe()
+  http.ListenAndServe(":8080", router)
 }
 ```
 
@@ -40,6 +39,8 @@ can be divided into three simple steps:
 
 The last thing to do, to make it work,
 is to define *NewMyToysController()* function.
+To be able to do that, we need to define controller structure
+and at least one method for handling REST calls.
 
 ```go
 // Example controller will handle calls to RESTful API
