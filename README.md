@@ -50,7 +50,7 @@ func (controller *MyToysController) Index() map[string]interface{} {
   return controller.storage
 }
 
-// Its good to check if proper interface is implemented (in this case
+// It's good to check if proper interface is implemented (in this case
 // restful.Indexer) to force early crash in case of method signature error.
 var _ restful.Indexer = &MyToysController{}
 
@@ -77,7 +77,7 @@ able to see empty json object after accessing [localhost:8080/api/mytoys/](
 http://localhost:8080/api/mytoys/).
 Object is empty because map returned from *MyToysController.Index()*
 is empty. Try addding some code that creates some content in constructor
-of the controller and see if it encodes to json properly.
+of the controller and see if it's being encoded to json properly.
 
 Have fun! :sweat_smile:
 
