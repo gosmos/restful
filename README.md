@@ -104,7 +104,7 @@ Consult [official GAE docs](
 https://developers.google.com/appengine/docs/go/gettingstarted/helloworld)
 for details.
 
-Why lack of ListenAndServeHTTP method?
+Why lack of ListenAndServe method?
 --------------------------------------
 
 Current implementation is based on
