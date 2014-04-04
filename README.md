@@ -44,7 +44,7 @@ func NewMyToysController() *MyToysController {
 
 // Index() method will be called when accessing root ("/") of our RESTful
 // resource using GET method (see HTTP/1.1 spec). It must return a map 
-// of type map[string]interface{}. Returned map will be encoded to json
+// of type map[string]interface{}. Returned map will be encoded to JSON
 // and written into body of HTTP response.
 func (controller *MyToysController) Index() map[string]interface{} {
   return controller.storage
@@ -73,13 +73,13 @@ go build main.go
 ```
 
 Empty program output signifies that everything went well and HTTP server
-us running. You should be able to see empty json object after accessing
+us running. You should be able to see empty JSON object after accessing
 [localhost:8080/api/mytoys/](http://localhost:8080/api/mytoys/).
 
 Object is empty because map returned from *MyToysController.Index()*
 is empty. Try addding some code in controller's constructor
 that inserts content to *controler.storage* and see if your data
-is being encoded to [json](http://json.org) properly.
+is being encoded to [JSON](http://json.org/) properly.
 To see your changes in the browser you need to recompile and restart
 example program.
 
