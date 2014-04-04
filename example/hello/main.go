@@ -16,16 +16,21 @@
 
 package main
 
+// we need restful package and some http server
 import (
   "github.com/gosmos/restful"
   "net/http"
 )
 
-// Example controller will handle calls to RESTful API
+// Example controller handles calls to RESTful API
 // of simple integers identified by string keys.
 type MyToysController struct {
   storage map[string]interface{}
-  nextKey int
+}
+
+// Contructs the controller.
+func NewMyToysController() *MyToysController {
+  return &MyToysController { make(map[string]interface{}) }
 }
 
 // Index() method will be called when accessing root ("/")
@@ -36,27 +41,10 @@ type MyToysController struct {
 func (controller *MyToysController) Index() map[string]interface{} {
   return controller.storage
 }
-// Create() method will be invoked when accessing root of restful
-// resource using POST method. JSON object from request body will be
-// decoded and passed in here as argument.
-func (controller *MyToysController) Create(newElement interface{}) string {
-  newElementInt := newElement.(int)
-  key := string(controller.nextKey)
-  controller.nextKey += 1
-  controller.storage[key] = newElementInt;
-  return key
-}
-// New() method creates new zeroed instance of resource object.
-// Incoming data will be decoded from json into returned instance
-// and passed to Create() method.
-func (controller *MyToysController) New() interface{} {
-  return 0
-}
 
-// Contructs the controller.
-func NewMyToysController() *MyToysController {
-  return &MyToysController { make(map[string]interface{}), 0 }
-}
+// Its good to check if proper interface is implemented
+// to force early crash in case of method signature error.
+var _ = MyToysController{}.(restful.Indexer)
 
 func main() {
   router := restful.NewRouter()
