@@ -72,12 +72,12 @@ go build main.go
 ./main
 ```
 
-If everything went well, you should be able to see empty json object
-(or json map) after accessing [localhost:8080/api/mytoys/](
-http://localhost:8080/api/mytoys/). Object is empty because map returned
-from *MyToysController.Index()* is empty. Try addding some code that
-creates some content in constructor of the controller and see if it
-encodes to json properly.
+Empty program output signifies that everything went well. You should be
+able to see empty json object (or json map) after accessing
+[localhost:8080/api/mytoys/](http://localhost:8080/api/mytoys/).
+Object is empty because map returned from *MyToysController.Index()*
+is empty. Try addding some code that creates some content in constructor
+of the controller and see if it encodes to json properly.
 
 Have fun! :sweat_smile:
 
