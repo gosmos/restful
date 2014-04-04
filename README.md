@@ -63,7 +63,7 @@ func main() {
 ```
 
 Compiling and running code above will result in fully operational RESTful
-resource. If you're using bash just paste following code to the terminal.
+resource. If you're using bash just paste following code into the terminal.
 
 ```bash
 wget https://raw.githubusercontent.com/gosmos/restful/master/example/hello/main.go
