@@ -82,9 +82,12 @@ TODO
 Google App Engine
 -----------------
 
-Library is fully GAE-compatible. There are two things to pay attention to:
- 1. Invoking *http.ListenAndServe()* is not allowed on GAE.
- 2. Using package *main* is prohibited.
+Library is fully GAE-compatible. There are few things to pay attention to:
+ 1. Invoking *http.ListenAndServe* is not allowed on GAE.
+    Use *http.Handle()* or *http.HandleFunc* instead.
+ 2. Using package *main* and declaring *main()* function is prohibited.
+    Create router in *init()* function of another package
+    or as a global variable.
 
 Consult [official GAE docs](
 https://developers.google.com/appengine/docs/go/gettingstarted/helloworld)
