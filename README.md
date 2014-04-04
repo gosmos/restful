@@ -58,10 +58,17 @@ func main() {
 }
 ```
 
-Compiling and running code above will result
-in fully operational RESTful resource.
-Going to [localhost:8080/api/mytoys/](http://localhost:8080/api/mytoys/)
-should display empty json object.
+Compiling and running code above will result in fully operational RESTful
+resource. If you're using bash just paste following code to the terminal.
+
+```bash
+wget https://raw.githubusercontent.com/gosmos/restful/master/example/hello/main.go
+go build main.go
+./main
+```
+
+If everything went well, you should be able to see empty json object
+after accessing [localhost:8080/api/mytoys/](http://localhost:8080/api/mytoys/).
 
 Convention Over Configuration
 -----------------------------
