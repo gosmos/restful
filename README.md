@@ -31,14 +31,14 @@ import (
   "net/http"
 )
 
-// First thing to do, is to define controller structure, which will
-// be responsible for handling calls to RESTful API.
+// First thing to do, is to define controller structure, which will be
+// responsible for handling calls to RESTful API.
 type MyToysController struct {
   // Memory storage implemented on map is used for simplicity.
   // Normally we would want some persistence in here.
   storage map[string]interface{}
 }
-// Contructs the controller.
+// Contructor function.
 func NewMyToysController() *MyToysController {
   controller := &MyToysController { make(map[string]interface{}) }
   return controller
