@@ -91,11 +91,6 @@ example program.
 
 Have fun! :sweat_smile:
 
-Convention Over Configuration
------------------------------
-
-TODO
-
 Google App Engine
 -----------------
 
