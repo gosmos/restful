@@ -1,12 +1,14 @@
 restful
 =======
 
-Concept of gosmos/restful is inspired by
-[REST resource routing configuration in Ruby on Rails framework](
-http://guides.rubyonrails.org/routing.html#resource-routing-the-rails-default).
-It aims to simplify routing configuration of RESTful resources,
-by reducing it to one line of code for each resource.
-
+A library that simplifies routing configuration of RESTful resources
+by reducing it to one line of code for each resource. Concept is inspired
+by [REST resource routing configuration in Ruby on Rails framework](
+http://guides.rubyonrails.org/routing.html#resource-routing-the-rails-default)
+and [Model-View-Controller](
+http://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller)
+architectural pattern.
+y
 Fetch gosmos/restful library to your go workspace!
 
 ```bash
