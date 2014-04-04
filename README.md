@@ -17,6 +17,8 @@ Hello, World!
 -------------
 
 ```go
+package main
+
 // We will need only gosmos/restful package and some http server.
 import (
   "github.com/gosmos/restful"
