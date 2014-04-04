@@ -8,7 +8,7 @@ http://guides.rubyonrails.org/routing.html#resource-routing-the-rails-default)
 and [Model-View-Controller](
 http://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller)
 architectural pattern.
-y
+
 Fetch gosmos/restful library to your go workspace!
 
 ```bash
