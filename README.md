@@ -18,6 +18,10 @@ go get github.com/gosmos/restful
 Hello, World!
 -------------
 
+Following example shows a way of using the library to create REST service
+that lists resources managed by the system. Code is heavily commented
+to facilitate fast understanding of what's going on.
+
 ```go
 package main
 
