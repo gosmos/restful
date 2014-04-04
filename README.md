@@ -80,7 +80,8 @@ Object is empty because map returned from *MyToysController.Index()*
 is empty. Try addding some code in controller's constructor
 that inserts content to *controler.storage* and see if your data
 is being encoded to [json](http://json.org) properly.
-To see your changes recompile and restart example program.
+To see your changes in the browser, you need to recompile and restart
+example program.
 
 Have fun! :sweat_smile:
 
