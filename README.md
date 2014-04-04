@@ -75,10 +75,12 @@ go build main.go
 Empty program output signifies that everything went well and HTTP server
 us running. You should be able to see empty json object after accessing
 [localhost:8080/api/mytoys/](http://localhost:8080/api/mytoys/).
+
 Object is empty because map returned from *MyToysController.Index()*
-is empty. Try addding some code that creates some content in constructor
-of the controller and see if yout data is being encoded
-to [json](http://json.org) properly.
+is empty. Try addding some code in controller's constructor
+that inserts content to *controler.storage* and see if your data
+is being encoded to [json](http://json.org) properly.
+To see your changes recompile and restart example program.
 
 Have fun! :sweat_smile:
 
