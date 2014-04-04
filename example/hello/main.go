@@ -16,36 +16,40 @@
 
 package main
 
-// we need restful package and some http server
+// We will need only gosmos/restful package and some http server.
 import (
   "github.com/gosmos/restful"
   "net/http"
 )
 
-// Example controller handles calls to RESTful API
-// of simple integers identified by string keys.
+// First thing to do, is defining controller structure, which is responsible
+// for handling calls to RESTful API of objects identified by string keys.
 type MyToysController struct {
+  // Memory storage implemented on map is used for simplicity.
+  // Normally we would want some persistence in here.
   storage map[string]interface{}
 }
-
 // Contructs the controller.
 func NewMyToysController() *MyToysController {
   return &MyToysController { make(map[string]interface{}) }
 }
 
-// Index() method will be called when accessing root ("/")
-// of the RESTful resource using GET method (see HTTP/1.1 spec).
-// It must always return a map from string to interface{}.
-// Returned map will be encoded to json and returned in the body
-// of HTTP response.
+// Our controller needs at least one method for handling REST calls.
+
+// Index() method will be called when accessing root ("/") of our RESTful
+// resource using GET method (see HTTP/1.1 spec). It must return a map 
+// of type map[string]interface{}. Returned map will be encoded to json
+// and written into body of HTTP response.
 func (controller *MyToysController) Index() map[string]interface{} {
   return controller.storage
 }
 
-// Its good to check if proper interface is implemented
-// to force early crash in case of method signature error.
-var _ = MyToysController{}.(restful.Indexer)
+// Its good to check if proper interface is implemented (in this case
+// restful.Indexer) to force early crash in case of method signature error.
+var _ restful.Indexer = &MyToysController{}
 
+// Lastly, we create router, configure our RESTful resource, and start
+// HTTP server. Voilà!
 func main() {
   router := restful.NewRouter()
   router.AddResource("/api/mytoys", NewMyToysController())
