@@ -36,7 +36,8 @@ type MyToysController struct {
 }
 // Contructs the controller.
 func NewMyToysController() *MyToysController {
-  return &MyToysController { make(map[string]interface{}) }
+  controller := &MyToysController { make(map[string]interface{}) }
+  return controller
 }
 
 // Our controller needs at least one method for handling REST calls.
@@ -72,7 +73,13 @@ go build main.go
 ```
 
 If everything went well, you should be able to see empty json object
-after accessing [localhost:8080/api/mytoys/](http://localhost:8080/api/mytoys/).
+(or json map) after accessing [localhost:8080/api/mytoys/](
+http://localhost:8080/api/mytoys/). Object is empty because map returned
+from *MyToysController.Index()* is empty. Try addding some code that
+creates some content in constructor of the controller and see if it
+encodes to json properly.
+
+Have fun! :sweat_smile:
 
 Convention Over Configuration
 -----------------------------

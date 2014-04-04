@@ -31,7 +31,8 @@ type MyToysController struct {
 }
 // Contructs the controller.
 func NewMyToysController() *MyToysController {
-  return &MyToysController { make(map[string]interface{}) }
+  controller := &MyToysController { make(map[string]interface{}) }
+  return controller
 }
 
 // Our controller needs at least one method for handling REST calls.
