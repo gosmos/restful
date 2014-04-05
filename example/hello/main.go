@@ -14,6 +14,13 @@
    limitations under the License.
 */
 
+/*
+  Hello, World!  
+
+  Following example program shows a way of using the library to create
+  REST service that lists resources managed by the system. Code is heavily
+  commented to facilitate fast understanding of what's going on.
+*/
 package main
 
 // We will need only gosmos/restful package and some http server.
