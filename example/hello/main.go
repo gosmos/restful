@@ -37,7 +37,7 @@ func NewMyToysController() *MyToysController {
 
 // Our controller needs to implement at least one interface for handling
 // REST calls (check controller.go for all possible interfaces).
-// Interface restful.Indexer will be our choise for this example.
+// Interface restful.Indexer will be our choice for this example.
 
 // Index() method will be called by the library on each access to root
 // of our RESTful resource ("/") that uses GET method (see HTTP/1.1 spec).

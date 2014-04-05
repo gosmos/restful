@@ -46,7 +46,7 @@ func NewMyToysController() *MyToysController {
 
 // Our controller needs to implement at least one interface for handling
 // REST calls (check controller.go for all possible interfaces).
-// Interface restful.Indexer will be our choise for this example.
+// Interface restful.Indexer will be our choice for this example.
 
 // Index() method will be called by the library on each access to root
 // of our RESTful resource ("/") that uses GET method (see HTTP/1.1 spec).
@@ -79,7 +79,7 @@ go build main.go
 ```
 
 Empty program output signifies that everything went well and HTTP server
-us running. You should be able to see empty JSON object after accessing
+is running. You should be able to see empty JSON object after accessing
 [localhost:8080/api/mytoys/](http://localhost:8080/api/mytoys/).
 
 Object is empty because map returned from *MyToysController.Index()*
