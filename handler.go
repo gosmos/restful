@@ -16,6 +16,10 @@
 
 package restful
 
+// This file contain only implementation details, which may be
+// not particularly interesing. If you are just want to use gosmos/restful,
+// please check out router.rb and controller.rb.
+
 import (
   "github.com/gorilla/mux"
   "encoding/json"
@@ -23,9 +27,12 @@ import (
   "fmt"
 )
 
-type HandlerFunc func(http.ResponseWriter, *http.Request)
+// This file contain handlers that are responsible for forwarding
+// HTTP calls in proper format to RESTful controllers.
 
-func NewIndexerHandler(controller Indexer) HandlerFunc {
+type handlerFunc func(http.ResponseWriter, *http.Request)
+
+func newIndexerHandler(controller Indexer) handlerFunc {
   return func (out http.ResponseWriter, req *http.Request) {
     elems := controller.Index()
     if elems == nil {
@@ -39,7 +46,7 @@ func NewIndexerHandler(controller Indexer) HandlerFunc {
   }
 }
 
-func NewShowerHandler(controller Shower) HandlerFunc {
+func newShowerHandler(controller Shower) handlerFunc {
   return func (out http.ResponseWriter, in *http.Request) {
     id := getResourceId(in)
 
@@ -52,7 +59,7 @@ func NewShowerHandler(controller Shower) HandlerFunc {
   }
 }
 
-func NewCreatorHandler(controller Creator) HandlerFunc {
+func newCreatorHandler(controller Creator) handlerFunc {
   return func (out http.ResponseWriter, in *http.Request) {
     decoder := json.NewDecoder(in.Body)
     elem := controller.New()
@@ -72,7 +79,7 @@ func NewCreatorHandler(controller Creator) HandlerFunc {
   }
 }
 
-func NewUpdaterHandler(cotroller Updater) HandlerFunc {
+func newUpdaterHandler(cotroller Updater) handlerFunc {
   return func (out http.ResponseWriter, in *http.Request) {
     id := getResourceId(in)
 
@@ -94,7 +101,7 @@ func NewUpdaterHandler(cotroller Updater) HandlerFunc {
   }
 }
 
-func NewDeleterHandler(deleter Deleter) HandlerFunc {
+func newDeleterHandler(deleter Deleter) handlerFunc {
   return func (out http.ResponseWriter, in *http.Request) {
     id := getResourceId(in)
 

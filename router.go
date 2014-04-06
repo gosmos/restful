@@ -54,23 +54,23 @@ func (router *Router) HandleResource(path string, controller interface{}) {
   registered := false
 
   if indexer, ok := controller.(Indexer); ok {
-    api.Path("/").Methods("GET").HandlerFunc(NewIndexerHandler(indexer))
+    api.Path("/").Methods("GET").HandlerFunc(newIndexerHandler(indexer))
     registered = true
   }
   if shower, ok := controller.(Shower); ok {
-    api.Path("/{id}").Methods("GET").HandlerFunc(NewShowerHandler(shower))
+    api.Path("/{id}").Methods("GET").HandlerFunc(newShowerHandler(shower))
     registered = true
   }
   if creator, ok := controller.(Creator); ok {
-    api.Path("/").Methods("POST").HandlerFunc(NewCreatorHandler(creator))
+    api.Path("/").Methods("POST").HandlerFunc(newCreatorHandler(creator))
     registered = true
   }
   if updater, ok := controller.(Updater); ok {
-    api.Path("/{id}").Methods("PUT").HandlerFunc(NewUpdaterHandler(updater))
+    api.Path("/{id}").Methods("PUT").HandlerFunc(newUpdaterHandler(updater))
     registered = true
   }
   if deleter, ok := controller.(Deleter); ok {
-    api.Path("/{id}").Methods("DELETE").HandlerFunc(NewDeleterHandler(deleter))
+    api.Path("/{id}").Methods("DELETE").HandlerFunc(newDeleterHandler(deleter))
     registered = true
   }
 
