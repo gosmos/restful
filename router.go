@@ -22,14 +22,26 @@ import (
   "fmt"
 )
 
+/*
+  Routes HTTP requests to controllers registered as RESTful resource handlers.
+  Main structure of the library.
+*/
 type Router struct {
   impl *mux.Router
 }
-
+/*
+  Constructs new router.
+*/
 func NewRouter() *Router {
   return &Router{ mux.NewRouter() }
 }
 
+/*
+  Registers given controller as handler for resource under given path.
+  Path should start with "/". Controller should implement at least one
+  of interfaces defined in controller.go file (to make all RESTful
+  operations available it must implement all of them).
+*/
 func (router *Router) AddResource(path string, controller interface{}) {
   api := router.impl.PathPrefix(path).Subrouter()
   registered := false
@@ -60,6 +72,9 @@ func (router *Router) AddResource(path string, controller interface{}) {
   }
 }
 
+/*
+  Called by HTTP server when request is received.
+*/
 func (router *Router) ServeHTTP(out http.ResponseWriter, in *http.Request) {
   router.impl.ServeHTTP(out, in)
 }
