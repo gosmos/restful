@@ -112,7 +112,7 @@ func createResourceAndServeARequest(router *Router,
     resource string, request string, controller interface{},
     out http.ResponseWriter) {
 
-  router.AddResource(resource, controller)
+  router.HandleResource(resource, controller)
 
   url := "http://www.domain.com"+ resource + request
   req, _ := http.NewRequest("GET", url, nil)

@@ -49,7 +49,7 @@ func NewRouter() *Router {
   of interfaces defined in controller.go file (to make all RESTful
   operations available it must implement all of them).
 */
-func (router *Router) AddResource(path string, controller interface{}) {
+func (router *Router) HandleResource(path string, controller interface{}) {
   api := router.impl.PathPrefix(path).Subrouter()
   registered := false
 

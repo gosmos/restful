@@ -62,7 +62,7 @@ var _ restful.Indexer = &MyToysController{}
 // and start HTTP server. Voilà!
 func main() {
   router := restful.NewRouter()
-  router.AddResource("/api/mytoys", NewMyToysController())
+  router.HandleResource("/api/mytoys", NewMyToysController())
   http.ListenAndServe(":8080", router)
 }
 
