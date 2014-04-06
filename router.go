@@ -14,6 +14,13 @@
    limitations under the License.
 */
 
+/*
+  Provides:
+   * HTTP Router capable of registering controller
+     objects as handlers for calls to RESTful resources,
+   * Interfaces are intended to be implemented
+     in controllers in client code (that uses this library).
+*/
 package restful
 
 import (
