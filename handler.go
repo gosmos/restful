@@ -94,7 +94,7 @@ func newUpdaterHandler(cotroller Updater) handlerFunc {
 
     cotroller.Update(id, elem)
 
-    bytes, _ := json.Marshal(map[string]interface{} { id : elem })
+    bytes, _ := json.Marshal(map[string]bool { "ok": true })
     if _, err := out.Write(bytes); err != nil {
       panic(err)
     }
@@ -105,9 +105,9 @@ func newDeleterHandler(deleter Deleter) handlerFunc {
   return func (out http.ResponseWriter, in *http.Request) {
     id := getResourceId(in)
 
-    ok := deleter.Delete(id)
+    deleter.Delete(id)
 
-    bytes, _ := json.Marshal(map[string]bool { "ok": ok })
+    bytes, _ := json.Marshal(map[string]bool { "ok": true })
     if _, err := out.Write(bytes); err != nil {
       panic(err)
     }

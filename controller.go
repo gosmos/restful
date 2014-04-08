@@ -75,9 +75,9 @@ type Updater interface {
   New() interface{}
   /*
     Invoked by the router after decoding body of HTTP request into
-    the object returned from New() method. Given id will be used as
-    a key of given object in a response map. Map will be JSON-encoded
-    and written into HTTP response.
+    the object returned from New() method. If this method finishes
+    thithout panic, response map will contain true value under index
+    "ok". Map will be JSON-encoded and written into HTTP response.
   */
   Update(string, interface{})
 }
@@ -88,10 +88,10 @@ type Updater interface {
 type Deleter interface {
   /*
     Invoked by the router when class to resource object ("/{id}")
-    is received via DELETE HTTP method. Returned boolean will be
-    put in a response map under key "ok". Map will be JSON-encoded
-    and written into HTTP response.
+    is received via DELETE HTTP method. If this method finishes
+    thithout panic, response map will contain true value under index
+    "ok". Map will be JSON-encoded and written into HTTP response.
   */
-  Delete(string) bool
+  Delete(string)
 }
 
