@@ -1,5 +1,5 @@
-restful
-=======
+goandrest
+=========
 
 A library that simplifies routing configuration of RESTful resources
 by reducing it to one line of code for each resource. Concept is inspired
@@ -9,10 +9,10 @@ and [Model-View-Controller](
 http://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller)
 architectural pattern.
 
-Fetch gosmos/restful library to your go workspace!
+Fetch muroc/goandrest library to your go workspace!
 
 ```bash
-go get github.com/gosmos/restful
+go get github.com/muroc/goandrest
 ```
 
 Hello, World!
@@ -73,7 +73,7 @@ Compiling and running code above will result in fully operational RESTful
 resource. If you're using bash just paste following code into the terminal.
 
 ```bash
-wget http://raw.github.com/gosmos/restful/master/example/hello/main.go
+wget http://raw.github.com/muroc/goandrest/master/example/hello/main.go
 go build main.go
 ./main
 ```
@@ -119,3 +119,7 @@ Restful is a HTTP router, not a HTTP server.
 Server functionality is (pretty well) covered
 in [net/http](http://golang.org/pkg/net/http/) package.
 
+License
+-------
+
+Copyright &copy; 2016 Maciej Chałapuk. Released under [Apache License 2.0.](LICENSE).
